@@ -187,6 +187,7 @@ const handleCommand = (command) => {
       break
   }
 }
+
 </script>
 
 <style scoped>
