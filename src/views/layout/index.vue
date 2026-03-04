@@ -172,15 +172,50 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // import { loginornotApi } from '@/api/userloginornot'
 const router = useRouter()
 const logout = () => {
-  //弹出确认框, 如果确认, 则退出登录, 跳转到登录页面
-  ElMessageBox.confirm('确认退出登录吗?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {//确认, 则清空登录信息
-    ElMessage.success('退出登录成功')
+  // 自定义退出登录确认弹窗，优化样式和动画
+  ElMessageBox.confirm(
+    '确定要退出当前账号吗？', // 更友好的提示文案
+    '退出登录', // 弹窗标题
+    {
+      // 弹窗样式与动画配置
+      confirmButtonText: '确认退出',
+      cancelButtonText: '取消',
+      type: 'warning',
+      // 自定义类名，用于样式美化
+      customClass: 'custom-logout-box',
+      // 动画相关配置
+      closeOnClickModal: false, // 点击遮罩不关闭
+      closeOnPressEscape: true, // 按ESC可关闭
+      showClose: true, // 显示关闭按钮
+      // 按钮样式配置
+      confirmButtonClass: 'logout-confirm-btn',
+      cancelButtonClass: 'logout-cancel-btn',
+      // 弹窗大小
+      center: true, // 内容居中
+      draggable: false // 禁止拖拽
+    }
+  ).then(() => {
+    // 确认退出逻辑
+    ElMessage({
+      message: '退出登录成功',
+      type: 'success',
+      duration: 1500, // 提示时长更短，更流畅
+      customClass: 'custom-logout-message'
+    })
+    // 清空登录信息
     localStorage.removeItem('loginUser')
-    router.push('/login')//跳转到登录页面
+    // 延迟跳转，让提示动画更完整
+    setTimeout(() => {
+      router.push('/login')
+    }, 800)
+  }).catch(() => {
+    // 取消退出的提示（可选，可根据需求删除）
+    ElMessage({
+      message: '已取消退出',
+      type: 'info',
+      duration: 1000,
+      customClass: 'custom-logout-message'
+    })
   })
 }
 // 侧边栏折叠状态
@@ -365,6 +400,121 @@ fetchData()
   
   .aside:not(.aside-collapse) + .main-content {
     margin-left: 220px;
+  }
+}
+
+/* 退出登录弹窗整体样式 */
+.custom-logout-box {
+  width: 420px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+  border: none !important;
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease-out !important;
+}
+
+/* 弹窗标题样式 */
+.custom-logout-box .el-message-box__title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #2d3748 !important;
+  padding: 20px 24px 0 24px !important;
+}
+
+/* 弹窗内容样式 */
+.custom-logout-box .el-message-box__content {
+  padding: 24px !important;
+  font-size: 15px !important;
+  color: #4a5568 !important;
+  line-height: 1.6 !important;
+}
+
+/* 弹窗按钮区域 */
+.custom-logout-box .el-message-box__btns {
+  padding: 0 24px 20px 24px !important;
+  display: flex !important;
+  gap: 12px !important;
+  justify-content: flex-end !important;
+}
+
+/* 确认退出按钮样式 */
+.logout-confirm-btn {
+  padding: 8px 20px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+  border: none !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.logout-confirm-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.25) !important;
+}
+
+/* 取消按钮样式 */
+.logout-cancel-btn {
+  padding: 8px 20px !important;
+  border-radius: 8px !important;
+  background: #f8fafc !important;
+  color: #4a5568 !important;
+  border: 1px solid #e2e8f0 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.logout-cancel-btn:hover {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e0 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 提示消息样式 */
+.custom-logout-message {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  animation: fadeIn 0.3s ease-out !important;
+}
+
+/* 弹窗淡入上移动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 消息提示淡入动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式适配 */
+@media (max-width: 480px) {
+  .custom-logout-box {
+    width: 90% !important;
+  }
+  
+  .custom-logout-box .el-message-box__btns {
+    flex-direction: column !important;
+  }
+  
+  .logout-confirm-btn, .logout-cancel-btn {
+    width: 100% !important;
   }
 }
 </style>
