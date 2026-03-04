@@ -161,11 +161,28 @@
 </template>
 
 <script setup>
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 // 全局引入Element Plus图标（避免选择性引入导致白屏）
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
-
+// import { ElMessage } from 'element-plus'
+// import { log } from 'node:console'
+// import { request } from '@/utils/request'
+// import { loginornotApi } from '@/api/userloginornot'
+const router = useRouter()
+const logout = () => {
+  //弹出确认框, 如果确认, 则退出登录, 跳转到登录页面
+  ElMessageBox.confirm('确认退出登录吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {//确认, 则清空登录信息
+    ElMessage.success('退出登录成功')
+    localStorage.removeItem('loginUser')
+    router.push('/login')//跳转到登录页面
+  })
+}
 // 侧边栏折叠状态
 const isCollapse = ref(false)
 
@@ -182,12 +199,31 @@ const handleCommand = (command) => {
       // 这里可以添加打开修改密码弹窗的逻辑
       break
     case 'logout':
-      ElMessage.info('退出登录功能待实现')
+      // ElMessage.info('退出登录功能待实现')
       // 这里可以添加退出登录的逻辑
+      logout() // 调用退出登录函数
       break
   }
 }
 
+let loading = ref(true) // 加载状态
+// 定义请求函数
+const fetchData = async () => {
+  try {
+    // 页面加载前发送请求
+    const { loginornotApi } = await import('@/api/userloginornot')
+    const response = await loginornotApi()
+    data.value = response.data // 赋值数据
+  } catch (error) {
+    console.error('请求失败:', error)
+    ElMessage.error('数据加载失败，请重试')
+  } finally {
+    loading.value = false // 无论成功失败，都结束加载状态
+  }
+}
+
+// 立即执行请求函数（页面加载时就触发）
+fetchData()
 </script>
 
 <style scoped>
