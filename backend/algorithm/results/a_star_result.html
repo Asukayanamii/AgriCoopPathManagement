@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A* 启发式路径搜索算法 - 测试结果</title>
+<style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #f0f2f5; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+    h2 { color: #34495e; margin-top: 30px; }
+    .card { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #3498db; color: white; }
+    tr:hover { background: #f5f8fa; }
+    .info { background: #eaf2f8; border-left: 4px solid #3498db; padding: 15px; border-radius: 4px; margin: 15px 0; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 8px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🧭 A* 启发式路径搜索算法 测试报告</h1>
+    <div class="info">
+        <strong>算法说明：</strong>A*（A-Star）启发式搜索算法，结合Dijkstra最短路径预处理和启发式评估函数，
+        在图中搜索从起点到终点的最优路径。使用最大距离差作为启发函数，保证搜索的方向性和效率。
+    </div>
+
+    <div class="card">
+        <h2>📋 测试参数</h2>
+        <table>
+            <tr><td>节点数 (q)</td><td>20</td></tr>
+            <tr><td>边数 (n)</td><td>30</td></tr>
+            <tr><td>聚类中心数 (m)</td><td>3</td></tr>
+            <tr><td>测试路径数</td><td>5</td></tr>
+            <tr><td>中心节点</td><td>[1, 6, 12]</td></tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>🗺️ 地图与搜索路径可视化</h2>
+        <svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg" style="background:#f8f9fa;border-radius:8px"><line x1="120" y1="120" x2="240" y2="120" stroke="#ccc" stroke-width="2"/><text x="180.0" y="117.0" font-size="9" fill="#999">10</text><line x1="240" y1="120" x2="360" y2="120" stroke="#ccc" stroke-width="2"/><text x="300.0" y="117.0" font-size="9" fill="#999">10</text><line x1="120" y1="120" x2="120" y2="240" stroke="#ccc" stroke-width="2"/><text x="120.0" y="177.0" font-size="9" fill="#999">12</text><line x1="240" y1="120" x2="240" y2="240" stroke="#ccc" stroke-width="2"/><text x="240.0" y="177.0" font-size="9" fill="#999">12</text><line x1="360" y1="120" x2="360" y2="240" stroke="#ccc" stroke-width="2"/><text x="360.0" y="177.0" font-size="9" fill="#999">12</text><line x1="120" y1="240" x2="240" y2="240" stroke="#ccc" stroke-width="2"/><text x="180.0" y="237.0" font-size="9" fill="#999">10</text><line x1="240" y1="240" x2="360" y2="240" stroke="#ccc" stroke-width="2"/><text x="300.0" y="237.0" font-size="9" fill="#999">10</text><line x1="120" y1="240" x2="120" y2="360" stroke="#ccc" stroke-width="2"/><text x="120.0" y="297.0" font-size="9" fill="#999">12</text><line x1="240" y1="240" x2="240" y2="360" stroke="#ccc" stroke-width="2"/><text x="240.0" y="297.0" font-size="9" fill="#999">12</text><line x1="360" y1="240" x2="360" y2="360" stroke="#ccc" stroke-width="2"/><text x="360.0" y="297.0" font-size="9" fill="#999">12</text><line x1="120" y1="360" x2="240" y2="360" stroke="#ccc" stroke-width="2"/><text x="180.0" y="357.0" font-size="9" fill="#999">10</text><line x1="240" y1="360" x2="360" y2="360" stroke="#ccc" stroke-width="2"/><text x="300.0" y="357.0" font-size="9" fill="#999">10</text><line x1="360" y1="120" x2="480" y2="120" stroke="#ccc" stroke-width="2"/><text x="420.0" y="117.0" font-size="9" fill="#999">12</text><line x1="360" y1="240" x2="480" y2="240" stroke="#ccc" stroke-width="2"/><text x="420.0" y="237.0" font-size="9" fill="#999">12</text><line x1="360" y1="360" x2="480" y2="360" stroke="#ccc" stroke-width="2"/><text x="420.0" y="357.0" font-size="9" fill="#999">12</text><line x1="480" y1="120" x2="480" y2="240" stroke="#ccc" stroke-width="2"/><text x="480.0" y="177.0" font-size="9" fill="#999">10</text><line x1="480" y1="240" x2="480" y2="360" stroke="#ccc" stroke-width="2"/><text x="480.0" y="297.0" font-size="9" fill="#999">10</text><line x1="480" y1="120" x2="600" y2="120" stroke="#ccc" stroke-width="2"/><text x="540.0" y="117.0" font-size="9" fill="#999">12</text><line x1="480" y1="240" x2="600" y2="240" stroke="#ccc" stroke-width="2"/><text x="540.0" y="237.0" font-size="9" fill="#999">12</text><line x1="480" y1="360" x2="600" y2="360" stroke="#ccc" stroke-width="2"/><text x="540.0" y="357.0" font-size="9" fill="#999">12</text><line x1="600" y1="120" x2="600" y2="240" stroke="#ccc" stroke-width="2"/><text x="600.0" y="177.0" font-size="9" fill="#999">10</text><line x1="600" y1="240" x2="600" y2="360" stroke="#ccc" stroke-width="2"/><text x="600.0" y="297.0" font-size="9" fill="#999">10</text><line x1="180" y1="180" x2="120" y2="120" stroke="#ccc" stroke-width="2"/><text x="150.0" y="147.0" font-size="9" fill="#999">5</text><line x1="180" y1="180" x2="240" y2="120" stroke="#ccc" stroke-width="2"/><text x="210.0" y="147.0" font-size="9" fill="#999">8</text><line x1="180" y1="180" x2="120" y2="240" stroke="#ccc" stroke-width="2"/><text x="150.0" y="207.0" font-size="9" fill="#999">8</text><line x1="300" y1="180" x2="240" y2="120" stroke="#ccc" stroke-width="2"/><text x="270.0" y="147.0" font-size="9" fill="#999">5</text><line x1="300" y1="180" x2="360" y2="120" stroke="#ccc" stroke-width="2"/><text x="330.0" y="147.0" font-size="9" fill="#999">8</text><line x1="300" y1="180" x2="240" y2="240" stroke="#ccc" stroke-width="2"/><text x="270.0" y="207.0" font-size="9" fill="#999">8</text><line x1="180" y1="300" x2="120" y2="240" stroke="#ccc" stroke-width="2"/><text x="150.0" y="267.0" font-size="9" fill="#999">5</text><line x1="180" y1="300" x2="120" y2="360" stroke="#ccc" stroke-width="2"/><text x="150.0" y="327.0" font-size="9" fill="#999">8</text><line x1="120" y1="120" x2="240" y2="120" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="240" y1="120" x2="360" y2="120" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="360" y1="120" x2="480" y2="120" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="120" x2="480" y2="240" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="240" x2="480" y2="360" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="360" x2="600" y2="360" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="240" y1="120" x2="360" y2="120" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,3"/><line x1="360" y1="120" x2="480" y2="120" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="120" x2="480" y2="240" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="240" x2="600" y2="240" stroke="#2ecc71" stroke-width="3" stroke-dasharray="5,3"/><line x1="120" y1="240" x2="240" y2="240" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3"/><line x1="240" y1="240" x2="300" y2="180" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3"/><line x1="300" y1="180" x2="360" y2="120" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3"/><line x1="360" y1="120" x2="480" y2="120" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="120" x2="600" y2="120" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3"/><line x1="120" y1="360" x2="240" y2="360" stroke="#f39c12" stroke-width="3" stroke-dasharray="5,3"/><line x1="240" y1="360" x2="240" y2="240" stroke="#f39c12" stroke-width="3" stroke-dasharray="5,3"/><line x1="240" y1="240" x2="300" y2="180" stroke="#f39c12" stroke-width="3" stroke-dasharray="5,3"/><line x1="300" y1="180" x2="360" y2="120" stroke="#f39c12" stroke-width="3" stroke-dasharray="5,3"/><line x1="360" y1="120" x2="480" y2="120" stroke="#f39c12" stroke-width="3" stroke-dasharray="5,3"/><line x1="180" y1="180" x2="120" y2="240" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="120" y1="240" x2="240" y2="240" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="240" y1="240" x2="360" y2="240" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="360" y1="240" x2="480" y2="240" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="480" y1="240" x2="600" y2="240" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><line x1="600" y1="240" x2="600" y2="360" stroke="#e74c3c" stroke-width="3" stroke-dasharray="5,3"/><circle cx="120" cy="120" r="6" fill="#e74c3c" stroke="#fff" stroke-width="2"/><text x="128" y="124" font-size="11" fill="#333">1</text><circle cx="240" cy="120" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="248" y="124" font-size="11" fill="#333">2</text><circle cx="360" cy="120" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="368" y="124" font-size="11" fill="#333">3</text><circle cx="120" cy="240" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="128" y="244" font-size="11" fill="#333">4</text><circle cx="240" cy="240" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="248" y="244" font-size="11" fill="#333">5</text><circle cx="360" cy="240" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="368" y="244" font-size="11" fill="#333">6</text><circle cx="120" cy="360" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="128" y="364" font-size="11" fill="#333">7</text><circle cx="240" cy="360" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="248" y="364" font-size="11" fill="#333">8</text><circle cx="360" cy="360" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="368" y="364" font-size="11" fill="#333">9</text><circle cx="480" cy="120" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="488" y="124" font-size="11" fill="#333">10</text><circle cx="480" cy="240" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="488" y="244" font-size="11" fill="#333">11</text><circle cx="480" cy="360" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="488" y="364" font-size="11" fill="#333">12</text><circle cx="600" cy="120" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="608" y="124" font-size="11" fill="#333">13</text><circle cx="600" cy="240" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="608" y="244" font-size="11" fill="#333">14</text><circle cx="600" cy="360" r="6" fill="#9b59b6" stroke="#fff" stroke-width="2"/><text x="608" y="364" font-size="11" fill="#333">15</text><circle cx="180" cy="180" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="188" y="184" font-size="11" fill="#333">16</text><circle cx="300" cy="180" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="308" y="184" font-size="11" fill="#333">17</text><circle cx="180" cy="300" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="188" y="304" font-size="11" fill="#333">18</text><circle cx="300" cy="300" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="308" y="304" font-size="11" fill="#333">19</text><circle cx="420" cy="180" r="6" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="428" y="184" font-size="11" fill="#333">20</text></svg>
+        
+    <div style="margin-top:15px;display:flex;gap:20px;flex-wrap:wrap">
+        <span><span style="display:inline-block;width:16px;height:3px;background:#e74c3c;margin-right:5px"></span>路径1 (1->15)</span>
+        <span><span style="display:inline-block;width:16px;height:3px;background:#2ecc71;margin-right:5px"></span>路径2 (2->14)</span>
+        <span><span style="display:inline-block;width:16px;height:3px;background:#3498db;margin-right:5px"></span>路径3 (4->13)</span>
+        <span><span style="display:inline-block;width:16px;height:3px;background:#f39c12;margin-right:5px"></span>路径4 (7->10)</span>
+    </div>
+    
+    </div>
+
+    <div class="card">
+        <h2>📊 路径搜索结果</h2>
+        <table>
+            <thead><tr><th>起点</th><th>终点</th><th>路径</th><th>路径长度</th></tr></thead>
+            <tbody>
+                <tr>
+            <td>1</td>
+            <td>15</td>
+            <td>1 -> 2 -> 3 -> 10 -> 11 -> 12 -> 15</td>
+            <td>64</td>
+        </tr><tr>
+            <td>2</td>
+            <td>14</td>
+            <td>2 -> 3 -> 10 -> 11 -> 14</td>
+            <td>44</td>
+        </tr><tr>
+            <td>4</td>
+            <td>13</td>
+            <td>4 -> 5 -> 17 -> 3 -> 10 -> 13</td>
+            <td>50</td>
+        </tr><tr>
+            <td>7</td>
+            <td>10</td>
+            <td>7 -> 8 -> 5 -> 17 -> 3 -> 10</td>
+            <td>50</td>
+        </tr><tr>
+            <td>16</td>
+            <td>15</td>
+            <td>16 -> 4 -> 5 -> 6 -> 11 -> 14 -> 15</td>
+            <td>62</td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>⚙️ 算法复杂度</h2>
+        <ul>
+            <li><strong>预处理 (Dijkstra):</strong> O(m * (q log q + n))，m为中心点数</li>
+            <li><strong>启发式搜索:</strong> 最坏 O(q log q)，实际远小于此</li>
+            <li><strong>启发函数:</strong> O(m) 计算最大距离差</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

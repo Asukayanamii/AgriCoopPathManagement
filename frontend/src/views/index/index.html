@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2K分辨率首页</title>
+    <style>
+        /* 全局重置+2K适配 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 16px; /* 2K下基准字号，保证文字清晰 */
+        }
+        body {
+            width: 2560px; /* 2K宽度 */
+            height: 1440px; /* 2K高度 */
+            margin: 0 auto;
+            font-family: "Microsoft Yahei", sans-serif;
+            overflow: hidden; /* 隐藏滚动条 */
+            background: #f5f7fa;
+        }
+
+        /* 头部导航 */
+        .header {
+            width: 100%;
+            height: 80px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 0 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d5eff;
+        }
+        .nav a {
+            margin-left: 4rem;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        .nav a:hover {
+            color: #2d5eff;
+        }
+
+        /* 核心banner区 */
+        .banner {
+            width: 100%;
+            height: calc(100% - 80px - 60px); /* 扣除头部+底部高度 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 80px;
+            background: linear-gradient(135deg, #2d5eff 0%, #4a7bff 100%);
+            color: #ffffff;
+        }
+        .banner-text {
+            flex: 1;
+        }
+        .banner-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .banner-desc {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        .banner-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #ffffff;
+            color: #2d5eff;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        .banner-btn:hover {
+            transform: translateY(-3px);
+        }
+        .banner-img {
+            flex: 1;
+            text-align: center;
+        }
+        .banner-img img {
+            width: 80%;
+            max-width: 600px;
+            height: auto;
+        }
+
+        /* 底部 */
+        .footer {
+            width: 100%;
+            height: 60px;
+            background: #333;
+            color: #ccc;
+            text-align: center;
+            line-height: 60px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="logo">PROJECT</div>
+        <nav class="nav">
+            <a href="#">首页</a>
+            <a href="#">功能</a>
+            <a href="#">案例</a>
+            <a href="#">关于我们</a>
+            <a href="#">联系</a>
+        </nav>
+    </header>
+
+    <!-- 核心banner区 -->
+    <section class="banner">
+        <div class="banner-text">
+            <h1 class="banner-title">高效解决你的业务需求<br>一站式数字化解决方案</h1>
+            <p class="banner-desc">基于前沿技术打造的产品，覆盖全场景业务流程，助力企业降本增效，实现数字化升级。</p>
+            <a href="#" class="banner-btn">立即体验</a>
+        </div>
+        <div class="banner-img">
+            <!-- 替换为项目相关图片，此处用占位图 -->
+            <img src="https://picsum.photos/600/400" alt="产品展示">
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        © 2025 PROJECT 版权所有 | 京ICP备XXXXXXX号
+    </footer>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小车调度算法 - 测试结果</title>
+<style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #f0f2f5; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { color: #2c3e50; border-bottom: 3px solid #22c55e; padding-bottom: 10px; }
+    h2 { color: #34495e; margin-top: 30px; }
+    .card { background: white; border-radius: 12px; padding: 25px; margin: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #22c55e; color: white; }
+    tr:hover { background: #f5f8fa; }
+    .info { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 15px; border-radius: 4px; margin: 15px 0; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 15px 0; }
+    .stat-card { padding: 20px; border-radius: 10px; text-align: center; color: white; }
+    .stat-card:nth-child(1) { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .stat-card:nth-child(2) { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .stat-card:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .stat-card:nth-child(4) { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .stat-card .num { font-size: 32px; font-weight: bold; }
+    .stat-card .label { font-size: 14px; opacity: 0.9; }
+    .scroll-table { max-height: 300px; overflow-y: auto; }
+    pre { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 8px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>小车调度算法 测试报告</h1>
+    <div class="info">
+        <strong>算法说明：</strong>给定一批可用小车（资源）和作业请求点（目标），
+        通过二分查找确定最小调度半径，找到满足需求数量的可用小车，
+        按曼哈顿距离排序，调度最近的小车前往作业点。
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><div class="num">30</div><div class="label">小车总数</div></div>
+        <div class="stat-card"><div class="num">27</div><div class="label">可用小车</div></div>
+        <div class="stat-card"><div class="num">3</div><div class="label">忙碌小车</div></div>
+        <div class="stat-card"><div class="num">5</div><div class="label">作业请求数</div></div>
+    </div>
+
+    <div class="card">
+        <h2>场景可视化</h2>
+        <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" style="background:#f8f9fa;border-radius:8px"><ellipse cx="120" cy="120" rx="50" ry="50" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="5,5"/><text x="100" y="65" font-size="11" fill="#6366f1" font-weight="bold">停车场</text><ellipse cx="480" cy="120" rx="50" ry="50" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="5,5"/><text x="460" y="65" font-size="11" fill="#6366f1" font-weight="bold">停车场</text><ellipse cx="300" cy="480" rx="50" ry="50" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="5,5"/><text x="280" y="425" font-size="11" fill="#6366f1" font-weight="bold">停车场</text><ellipse cx="180" cy="360" rx="50" ry="50" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="5,5"/><text x="160" y="305" font-size="11" fill="#6366f1" font-weight="bold">停车场</text><ellipse cx="420" cy="360" rx="50" ry="50" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1" stroke-dasharray="5,5"/><text x="400" y="305" font-size="11" fill="#6366f1" font-weight="bold">停车场</text><rect x="109" y="164" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="110" y="160" font-size="7" fill="#555">T1</text><rect x="85" y="140" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="86" y="136" font-size="7" fill="#555">T2</text><rect x="127" y="134" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="128" y="130" font-size="7" fill="#555">T3</text><rect x="505" y="170" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="506" y="166" font-size="7" fill="#555">T4</text><rect x="409" y="356" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="410" y="352" font-size="7" fill="#555">T5</text><rect x="121" y="104" width="10" height="8" rx="2" fill="#ef4444" opacity="0.8"/><text x="122" y="100" font-size="7" fill="#555">T6</text><rect x="103" y="146" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="104" y="142" font-size="7" fill="#555">T7</text><rect x="199" y="308" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="200" y="304" font-size="7" fill="#555">T8</text><rect x="181" y="392" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="182" y="388" font-size="7" fill="#555">T9</text><rect x="355" y="476" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="356" y="472" font-size="7" fill="#555">T10</text><rect x="157" y="314" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="158" y="310" font-size="7" fill="#555">T11</text><rect x="139" y="350" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="140" y="346" font-size="7" fill="#555">T12</text><rect x="469" y="98" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="470" y="94" font-size="7" fill="#555">T13</text><rect x="307" y="494" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="308" y="490" font-size="7" fill="#555">T14</text><rect x="109" y="86" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="110" y="82" font-size="7" fill="#555">T15</text><rect x="115" y="122" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="116" y="118" font-size="7" fill="#555">T16</text><rect x="193" y="50" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="194" y="46" font-size="7" fill="#555">T17</text><rect x="403" y="290" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="404" y="286" font-size="7" fill="#555">T18</text><rect x="211" y="344" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="212" y="340" font-size="7" fill="#555">T19</text><rect x="187" y="350" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="188" y="346" font-size="7" fill="#555">T20</text><rect x="175" y="344" width="10" height="8" rx="2" fill="#ef4444" opacity="0.8"/><text x="176" y="340" font-size="7" fill="#555">T21</text><rect x="523" y="122" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="524" y="118" font-size="7" fill="#555">T22</text><rect x="169" y="350" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="170" y="346" font-size="7" fill="#555">T23</text><rect x="403" y="362" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="404" y="358" font-size="7" fill="#555">T24</text><rect x="121" y="86" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="122" y="82" font-size="7" fill="#555">T25</text><rect x="199" y="356" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="200" y="352" font-size="7" fill="#555">T26</text><rect x="115" y="86" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="116" y="82" font-size="7" fill="#555">T27</text><rect x="493" y="92" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="494" y="88" font-size="7" fill="#555">T28</text><rect x="457" y="128" width="10" height="8" rx="2" fill="#ef4444" opacity="0.8"/><text x="458" y="124" font-size="7" fill="#555">T29</text><rect x="115" y="86" width="10" height="8" rx="2" fill="#22c55e" opacity="0.8"/><text x="116" y="82" font-size="7" fill="#555">T30</text><polygon points="180,172 174,184 186,184" fill="#e74c3c" stroke="#fff" stroke-width="2"/><text x="190" y="184" font-size="12" fill="#e74c3c" font-weight="bold">P1</text><polygon points="420,172 414,184 426,184" fill="#3498db" stroke="#fff" stroke-width="2"/><text x="430" y="184" font-size="12" fill="#3498db" font-weight="bold">P2</text><polygon points="300,412 294,424 306,424" fill="#f39c12" stroke="#fff" stroke-width="2"/><text x="310" y="424" font-size="12" fill="#f39c12" font-weight="bold">P3</text><polygon points="120,382 114,394 126,394" fill="#9b59b6" stroke="#fff" stroke-width="2"/><text x="130" y="394" font-size="12" fill="#9b59b6" font-weight="bold">P4</text><polygon points="480,382 474,394 486,394" fill="#1abc9c" stroke="#fff" stroke-width="2"/><text x="490" y="394" font-size="12" fill="#1abc9c" font-weight="bold">P5</text></svg>
+        
+    <div style="margin-top:15px;display:flex;gap:20px;flex-wrap:wrap">
+        <span><span style="display:inline-block;width:10px;height:8px;border-radius:2px;background:#22c55e;margin-right:5px"></span>可用小车</span>
+        <span><span style="display:inline-block;width:10px;height:8px;border-radius:2px;background:#ef4444;margin-right:5px"></span>忙碌小车</span>
+        <span><span style="display:inline-block;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #e74c3c;margin-right:5px;display:inline-block"></span>作业请求点</span>
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:1px dashed #6366f1;margin-right:5px"></span>停车场区域</span>
+    </div>
+    
+        <p style="margin-top:10px;color:#666;font-size:13px">
+            <b>图例：</b>绿色方块=可用小车 | 红色方块=忙碌小车 | 三角形=作业请求点 | 虚线圆=停车场
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>调度结果</h2>
+        <table>
+            <thead><tr><th>作业点</th><th>位置</th><th>需求小车数</th><th>调度数量</th><th>调度小车编号</th><th>状态</th></tr></thead>
+            <tbody>
+                <tr>
+            <td><span style="display:inline-block;width:12px;height:12px;background:#e74c3c;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);margin-right:5px;vertical-align:middle"></span>P1</td>
+            <td>(30, 30)</td>
+            <td>3</td>
+            <td>3 辆</td>
+            <td>T1, T3, T16</td>
+            <td><span style="color:#22c55e;font-weight:bold">已调度</span></td>
+        </tr><tr>
+            <td><span style="display:inline-block;width:12px;height:12px;background:#3498db;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);margin-right:5px;vertical-align:middle"></span>P2</td>
+            <td>(70, 30)</td>
+            <td>4</td>
+            <td>4 辆</td>
+            <td>T4, T13, T22, T28</td>
+            <td><span style="color:#22c55e;font-weight:bold">已调度</span></td>
+        </tr><tr>
+            <td><span style="display:inline-block;width:12px;height:12px;background:#f39c12;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);margin-right:5px;vertical-align:middle"></span>P3</td>
+            <td>(50, 70)</td>
+            <td>2</td>
+            <td>2 辆</td>
+            <td>T14, T10</td>
+            <td><span style="color:#22c55e;font-weight:bold">已调度</span></td>
+        </tr><tr>
+            <td><span style="display:inline-block;width:12px;height:12px;background:#9b59b6;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);margin-right:5px;vertical-align:middle"></span>P4</td>
+            <td>(20, 65)</td>
+            <td>3</td>
+            <td>3 辆</td>
+            <td>T12, T9, T23</td>
+            <td><span style="color:#22c55e;font-weight:bold">已调度</span></td>
+        </tr><tr>
+            <td><span style="display:inline-block;width:12px;height:12px;background:#1abc9c;clip-path:polygon(50% 0%, 0% 100%, 100% 100%);margin-right:5px;vertical-align:middle"></span>P5</td>
+            <td>(80, 65)</td>
+            <td>3</td>
+            <td>3 辆</td>
+            <td>T5, T24, T18</td>
+            <td><span style="color:#22c55e;font-weight:bold">已调度</span></td>
+        </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>全部小车列表</h2>
+        <div class="scroll-table">
+            <table>
+                <thead><tr><th>编号</th><th>位置</th><th>状态</th></tr></thead>
+                <tbody>
+                    <tr><td>T1</td><td>(19, 28)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T2</td><td>(15, 24)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T3</td><td>(22, 23)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T4</td><td>(85, 29)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T5</td><td>(69, 60)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T6</td><td>(21, 18)</td><td><span style="color:#ef4444">忙碌</span></td></tr><tr><td>T7</td><td>(18, 25)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T8</td><td>(34, 52)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T9</td><td>(31, 66)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T10</td><td>(60, 80)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T11</td><td>(27, 53)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T12</td><td>(24, 59)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T13</td><td>(79, 17)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T14</td><td>(52, 83)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T15</td><td>(19, 15)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T16</td><td>(20, 21)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T17</td><td>(33, 9)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T18</td><td>(68, 49)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T19</td><td>(36, 58)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T20</td><td>(32, 59)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T21</td><td>(30, 58)</td><td><span style="color:#ef4444">忙碌</span></td></tr><tr><td>T22</td><td>(88, 21)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T23</td><td>(29, 59)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T24</td><td>(68, 61)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T25</td><td>(21, 15)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T26</td><td>(34, 60)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T27</td><td>(20, 15)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T28</td><td>(83, 16)</td><td><span style="color:#22c55e">空闲</span></td></tr><tr><td>T29</td><td>(77, 22)</td><td><span style="color:#ef4444">忙碌</span></td></tr><tr><td>T30</td><td>(20, 15)</td><td><span style="color:#22c55e">空闲</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>算法复杂度</h2>
+        <ul>
+            <li><strong>二分查找半径:</strong> O(log(min(n, m)) * k)，k为小车数</li>
+            <li><strong>曼哈顿距离排序:</strong> O(k log k)</li>
+            <li><strong>总复杂度:</strong> O(log(n) * k + k log k)</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

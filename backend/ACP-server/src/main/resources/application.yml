@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: acp
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${acp.datasource.driver-class-name}
+    url: jdbc:mysql://${acp.datasource.host}:${acp.datasource.port}/${acp.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${acp.datasource.username}
+    password: ${acp.datasource.password}
+
+  data:
+    redis:
+      port: ${acp.redis.port}
+      password: ${acp.redis.password}
+      database: ${acp.redis.database}
+
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.acp.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      acp:
+        mapper: debug
+        service: info
+        controller: info
+
+acp:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: AgriCoopPath2025SecureJwtSecretKeyForHS256
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+
+  alioss:
+    endpoint: ${acp.alioss.endpoint}
+    access-key-id: ${acp.alioss.access-key-id}
+    access-key-secret: ${acp.alioss.access-key-secret}
+    bucket-name: ${acp.alioss.bucket-name}
+
