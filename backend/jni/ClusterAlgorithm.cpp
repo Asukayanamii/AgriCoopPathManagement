@@ -25,7 +25,7 @@ int ClusterAlgorithm::update_new_centure(int k) {
             ll new_dis = conclude_dis(k, i);
             if (new_dis < a[i].dis) {
                 if (a[i].meanid != a[k].meanid) {
-                    a[que[a[i].meanid]].w--;
+                    if (a[i].meanid > 0) a[que[a[i].meanid]].w--;
                     a[k].w++;
                     change++;
                     a[i].meanid = a[k].meanid;
@@ -57,10 +57,12 @@ int ClusterAlgorithm::qualifed() {
 
 // 添加一个新的聚类中心
 void ClusterAlgorithm::add_a_node(int k) {
+    if (a[k].meanid > 0) a[que[a[k].meanid]].w--;
     a[k].father = 0;
     a[k].meanid = ++tot;
     a[k].w = 1;
     a[k].dis = 0;
+    que.push_back(k);
 }
 
 // 按随机权值+距离权值随机分裂一个新聚类中心
@@ -73,9 +75,9 @@ int ClusterAlgorithm::split_a_new_node(int k) {
     std::uniform_int_distribution<int> dist(1, 1000000);
 
     long long ans = 0;
-    int ansid = k;
+    int ansid = 0;
     for (int i = 1; i <= q; i++) {
-        if (a[i].meanid == a[k].meanid) {
+        if (a[i].meanid == a[k].meanid && i != k) {
             long long num = dist(gen);
             if (num * a[i].dis > ans) {
                 ans = num * a[i].dis;
@@ -83,40 +85,52 @@ int ClusterAlgorithm::split_a_new_node(int k) {
             }
         }
     }
+    if (ansid == 0) ansid = k;
     return ansid;
 }
 
 // 更新新的点
 void ClusterAlgorithm::switch_node(int pre, int now, int id) {
+    if (pre == now) return;
     a[now].w = a[pre].w;
     a[pre].w = 0;
     a[pre].father = -1;
     a[now].father = 0;
+    a[now].dis = 0;
     que[id] = now;
 }
 
 // 寻找新的平均中心点
 void ClusterAlgorithm::conclude_mean() {
-    // 计算平均值
+    // 计算平均值（跳过father=-1的被替换的旧中心）
     vector<int> meanx(tot + 1, 0);
     vector<int> meany(tot + 1, 0);
     for (int i = 1; i <= q; i++) {
-        meanx[a[i].meanid] += a[i].x - a[a[i].father].x;
-        meany[a[i].meanid] += a[i].y - a[a[i].father].y;
+        int f = a[i].father;
+        if (f > 0) {
+            meanx[a[i].meanid] += a[i].x - a[f].x;
+            meany[a[i].meanid] += a[i].y - a[f].y;
+        }
     }
 
     for (int i = 1; i <= tot; i++) {
-        meanx[i] = a[que[i]].x + meanx[i] / a[que[i]].w;
-        meany[i] = a[que[i]].y + meany[i] / a[que[i]].w;
+        int w = a[que[i]].w;
+        if (w > 0) {
+            meanx[i] = a[que[i]].x + meanx[i] / w;
+            meany[i] = a[que[i]].y + meany[i] / w;
+        } else {
+            meanx[i] = a[que[i]].x;
+            meany[i] = a[que[i]].y;
+        }
     }
 
-    // 寻找距离平均值最近的点
+    // 寻找距离平均值最近的点（用 meanx/meany 而非当前中心）
     vector<int> minn(tot + 1, INT_MAX);
     vector<int> new_centure(tot + 1, 0);
     for (int i = 1; i <= q; i++) {
-        int k = que[a[i].meanid];
-        if (abs(a[k].x - a[i].x) + abs(a[k].y - a[i].y) < minn[a[i].meanid]) {
-            minn[a[i].meanid] = abs(a[k].x - a[i].x) + abs(a[k].y - a[i].y);
+        int d = abs(meanx[a[i].meanid] - a[i].x) + abs(meany[a[i].meanid] - a[i].y);
+        if (d < minn[a[i].meanid]) {
+            minn[a[i].meanid] = d;
             new_centure[a[i].meanid] = i;
         }
     }
@@ -136,6 +150,7 @@ ClusterAlgorithm::ClusterAlgorithm(int _n, int _m, int _q, int _space_cluster, i
     space_cluster = _space_cluster;
     deviation = _deviation;
     iteration_count = _iteration_count;
+    tot = 0;
     
     // 初始化que和节点数组（节点从1开始索引，与原逻辑一致）
     que.resize(1, 0);
@@ -157,13 +172,10 @@ ClusterAlgorithm::ClusterAlgorithm(int _n, int _m, int _q, int _space_cluster, i
 
 // 执行聚类算法（替代原main函数的核心逻辑）
 void ClusterAlgorithm::run() {
-    // 随机第一个聚类中心
-    int fis = rand() % q + 1; // 第一个聚类中心
+    int fis = rand() % q + 1;
     add_a_node(fis);
     update_new_centure(fis);
-    que.push_back(fis);
 
-    // 从第一个聚类开始分裂，直到合格
     int change_node = qualifed();
     while (change_node) {
         int new_node = split_a_new_node(que[change_node]);
@@ -179,7 +191,7 @@ void ClusterAlgorithm::run() {
                 different_node += update_new_centure(que[i]);
             }
         }
-        change_node = qualifed(); // 原代码遗漏这行，导致死循环，此处修复
+        change_node = qualifed();
     }
 }
 

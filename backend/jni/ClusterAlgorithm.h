@@ -20,7 +20,7 @@ class ClusterAlgorithm {
 private:
     // 算法参数
     int n, m, q, space_cluster, deviation, iteration_count;
-    int tot; // 聚类个数
+    int tot = 0; // 聚类个数
     std::vector<int> que;
 
     // 地图节点结构体：存储坐标、聚类信息、距离等

@@ -1,16 +1,9 @@
 import request from '@/utils/request'
 
-// 执行算法计算
-export const calculateAlgorithm = (data) => request.post('/algorithm/calculate', data)
+export const cluster = (data) => request.post('/algorithm/cluster', data)
 
-// 获取算法对比数据
-export const getAlgorithmComparison = () => request.get('/algorithm/comparison')
+export const resourceSearch = (data) => request.post('/algorithm/resource-search', data)
 
-// 执行聚类算法
-export const calculateClustering = (data) => request.post('/algorithm/clustering', data)
+export const pathPlanning = (data) => request.post('/algorithm/path-planning', data)
 
-// 获取算法历史记录
-export const getAlgorithmHistory = () => request.get('/algorithm/history')
-
-// 获取算法参数模板
-export const getAlgorithmTemplates = () => request.get('/algorithm/templates')
+export const pipeline = (data) => request.post('/algorithm/pipeline', data)

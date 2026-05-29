@@ -97,8 +97,9 @@ Java_com_agripath_acpcommon_utils_KMeansClusterUtil_kMeans(
         // - 维度2：每行数据列
 
         // 3.1 创建 Java 三维数组的外层数组（长度3）
-        jclass intArrayClass = env->FindClass("[I"); // int[] 类
-        jobjectArray result3D = env->NewObjectArray(3, intArrayClass, nullptr);
+        jclass intArrayClass = env->FindClass("[I");   // int[] 类（用于构建二维数组）
+        jclass intArray2DClass = env->FindClass("[[I"); // int[][] 类（用于构建三维数组）
+        jobjectArray result3D = env->NewObjectArray(3, intArray2DClass, nullptr);
         if (result3D == nullptr) {
             env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "创建三维数组失败");
             return nullptr;
