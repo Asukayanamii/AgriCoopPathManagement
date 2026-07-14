@@ -7,6 +7,7 @@ import java.util.List;
 public class PipelineRequestDTO {
     private int mapWidth;
     private int mapHeight;
+    private int gridResolution = 10;
     private List<int[]> taskPoints;
     private int spaceCluster = 8;
     private int deviation = 2;

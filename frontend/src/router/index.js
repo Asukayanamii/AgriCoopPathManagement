@@ -18,6 +18,7 @@ const router = createRouter({
         { path: 'algorithm/path-planning', name: 'path-planning', component: () => import('@/views/algorithm/PathPlanView.vue') },
         { path: 'algorithm/resource-search', name: 'resource-search', component: () => import('@/views/algorithm/ResourceSearchView.vue') },
         { path: 'algorithm/pipeline', name: 'pipeline', component: () => import('@/views/algorithm/PipelineView.vue') },
+        { path: 'map-edit', name: 'map-edit', component: () => import('@/views/map/MapPreprocess.vue') },
       ]
     },
     { path: '/login', name: 'login', component: LoginView }

@@ -53,6 +53,10 @@
                 <template #title>协同流水线</template>
               </el-menu-item>
             </el-sub-menu>
+            <el-menu-item index="/map-edit">
+              <el-icon><Picture /></el-icon>
+              <template #title>地图预处理</template>
+            </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main class="main-content">

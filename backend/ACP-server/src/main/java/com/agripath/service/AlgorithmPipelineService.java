@@ -122,7 +122,8 @@ public class AlgorithmPipelineService {
                 dto.getMapWidth(), dto.getMapHeight(),
                 dto.getStartX(), dto.getStartY(),
                 dto.getEndX(), dto.getEndY(),
-                obstacles.size(), ox, oy
+                obstacles.size(), ox, oy,
+                dto.getGridResolution()
         );
 
         double distance = 0;
@@ -247,7 +248,8 @@ public class AlgorithmPipelineService {
                         int[][] path = AStarNative.findPath(
                                 dto.getMapWidth(), dto.getMapHeight(),
                                 srcX, srcY, t.getX(), t.getY(),
-                                0, new int[0], new int[0]
+                                0, new int[0], new int[0],
+                                dto.getGridResolution()
                         );
                         Map<String, Object> pi = new LinkedHashMap<>();
                         pi.put("from", new int[]{srcX, srcY});
