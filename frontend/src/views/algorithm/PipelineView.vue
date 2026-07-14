@@ -77,6 +77,7 @@ const groups = ref([])
 const centers = ref([])
 const clusterCount = ref(0)
 const searchResults = ref([])
+const pathPlans = ref([])
 const stepStatus = ref(['pending', 'pending', 'pending'])
 const scale = 3
 
@@ -99,13 +100,9 @@ const matchLines = computed(() => {
   return lines
 })
 const pathLines = computed(() => {
-  return targets.value.map((t, ti) => {
-    if (searchResults.value[ti]?.status !== 'success') return ''
-    const id = (searchResults.value[ti]?.resourceIds || [])[0]
-    if (!id) return ''
-    const r = resources.value.find(r2 => r2.id === id)
-    if (!r) return ''
-    return `${r.x*scale},${r.y*scale} ${t.x*scale},${t.y*scale}`
+  return pathPlans.value.map(pl => {
+    if (!pl.path || pl.path.length < 2) return ''
+    return pl.path.map(p => `${p[0] * scale},${p[1] * scale}`).join(' ')
   }).filter(Boolean)
 })
 
@@ -135,6 +132,7 @@ function generateScene() {
   centers.value = []
   clusterCount.value = 0
   searchResults.value = []
+  pathPlans.value = []
   stepStatus.value = ['pending', 'pending', 'pending']
 }
 
@@ -162,7 +160,9 @@ async function runPipeline() {
     })
     stepStatus.value = ['done', 'done', 'done']
     searchResults.value = steps.resourceSearch || []
-    ElMessage.success(`流水线完成：${clusterCount.value}个聚类，${searchResults.value.filter(r=>r.status==='success').length}个目标匹配`)
+    pathPlans.value = steps.pathPlanning || []
+    const matched = searchResults.value.filter(r => r.status === 'success').length
+    ElMessage.success(`流水线完成：${clusterCount.value}个聚类，${matched}个目标匹配`)
   } catch (e) { ElMessage.error('流水线失败: ' + (e.message || '')) }
   finally { loading.value = false }
 }
