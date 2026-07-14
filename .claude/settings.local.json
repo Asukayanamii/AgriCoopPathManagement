@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./mvnw -v)",
+      "Bash(mvn -v)",
+      "Bash(curl -s http://localhost:8080/user/loginornot)",
+      "Bash(mysql -u root -pdwq23333 agricooppath -e \"SHOW TABLES;\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Bash(curl *)",
+      "Bash(jps -l)",
+      "Bash(kill 2504)",
+      "Bash(jps)",
+      "Bash(taskkill /F /PID 2504)",
+      "Bash(mvn clean *)",
+      "Bash(nohup java -jar ACP-server/target/ACP-server-0.0.1-SNAPSHOT.jar)",
+      "Bash(echo \"started, PID=$!\")",
+      "Bash(nohup java -jar \"D:\\\\qianduan\\\\AgriCoopPathManagement\\\\backend\\\\ACP-server\\\\target\\\\ACP-server-0.0.1-SNAPSHOT.jar\")",
+      "Bash(echo \"PID=$!\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(awk '{print $1}')",
+      "Bash(xargs -r taskkill /F)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill /F /PID 35780)",
+      "Bash(powershell -Command \"Stop-Process -Id 35780 -Force; Start-Sleep -Seconds 2; netstat -ano | Select-String ':8080.*LISTENING'\")"
+    ]
+  }
+}

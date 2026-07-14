@@ -1,0 +1,37 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.3)
+
+2026-07-14T16:11:34.937+08:00  INFO 35780 --- [ACP-common] [           main] com.agripath.AcpServerApplication        : Starting AcpServerApplication v0.0.1-SNAPSHOT using Java 25.0.1 with PID 35780 (D:\qianduan\AgriCoopPathManagement\backend\ACP-server\target\ACP-server-0.0.1-SNAPSHOT.jar started by ASUS in D:\qianduan\AgriCoopPathManagement\backend)
+2026-07-14T16:11:34.943+08:00  INFO 35780 --- [ACP-common] [           main] com.agripath.AcpServerApplication        : The following 1 profile is active: "dev"
+2026-07-14T16:11:35.987+08:00  INFO 35780 --- [ACP-common] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-07-14T16:11:35.990+08:00  INFO 35780 --- [ACP-common] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-07-14T16:11:36.021+08:00  INFO 35780 --- [ACP-common] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2026-07-14T16:11:36.955+08:00  INFO 35780 --- [ACP-common] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-07-14T16:11:36.979+08:00  INFO 35780 --- [ACP-common] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-14T16:11:36.979+08:00  INFO 35780 --- [ACP-common] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-07-14T16:11:37.026+08:00  INFO 35780 --- [ACP-common] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1993 ms
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.agripath.acpcommon.utils.NativeLibLoader in an unnamed module (jar:nested:/D:/qianduan/AgriCoopPathManagement/backend/ACP-server/target/ACP-server-0.0.1-SNAPSHOT.jar/!BOOT-INF/lib/ACP-common-0.0.1-SNAPSHOT.jar!/)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-07-14T16:11:37.142+08:00  INFO 35780 --- [ACP-common] [           main] com.agripath.AcpServerApplication        : Native algorithm libraries loaded successfully
+2026-07-14T16:11:37.622+08:00  INFO 35780 --- [ACP-common] [           main] c.a.service.impl.MapImageServiceImpl     : Map upload directory ready: ./uploads/maps
+2026-07-14T16:11:37.683+08:00  INFO 35780 --- [ACP-common] [           main] c.agripath.config.WebMvcConfiguration    : 开始注册自定义拦截器...
+2026-07-14T16:11:38.693+08:00  INFO 35780 --- [ACP-common] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-07-14T16:11:38.704+08:00  INFO 35780 --- [ACP-common] [           main] com.agripath.AcpServerApplication        : Started AcpServerApplication in 4.407 seconds (process running for 5.195)
+2026-07-14T16:11:46.530+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-14T16:11:46.530+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-07-14T16:11:46.531+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-07-14T16:11:46.593+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-07-14T16:11:46.881+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-1] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@63b521e
+2026-07-14T16:11:46.883+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-07-14T16:11:52.675+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-2] c.a.controller.MapImageController        : 上传地图图片: test_map.png
+2026-07-14T16:11:52.953+08:00  INFO 35780 --- [ACP-common] [nio-8080-exec-2] c.a.service.impl.MapImageServiceImpl     : Map image uploaded: test_map.png (400x300, 123291 bytes)
