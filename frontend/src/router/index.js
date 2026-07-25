@@ -14,10 +14,6 @@ const router = createRouter({
       redirect: '/index',
       children: [
         { path: 'index', name: 'index', component: IndexView },
-        { path: 'algorithm/cluster', name: 'cluster', component: () => import('@/views/algorithm/ClusterView.vue') },
-        { path: 'algorithm/path-planning', name: 'path-planning', component: () => import('@/views/algorithm/PathPlanView.vue') },
-        { path: 'algorithm/resource-search', name: 'resource-search', component: () => import('@/views/algorithm/ResourceSearchView.vue') },
-        { path: 'algorithm/pipeline', name: 'pipeline', component: () => import('@/views/algorithm/PipelineView.vue') },
         { path: 'map-edit', name: 'map-edit', component: () => import('@/views/map/MapPreprocess.vue') },
       ]
     },

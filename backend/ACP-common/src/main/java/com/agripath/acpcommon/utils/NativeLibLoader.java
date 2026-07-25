@@ -13,7 +13,7 @@ public class NativeLibLoader {
             Path nativeDir = Paths.get(tmpDir, "agripath_native");
             Files.createDirectories(nativeDir);
 
-            String[] libs = {"k_means_cluster.dll", "ResourceSearchJNI.dll", "AStarJNI.dll"};
+            String[] libs = {"UAVLibrary.dll", "ACPJNIAdapter.dll"};
             for (String lib : libs) {
                 Path dest = nativeDir.resolve(lib);
                 if (!Files.exists(dest)) {

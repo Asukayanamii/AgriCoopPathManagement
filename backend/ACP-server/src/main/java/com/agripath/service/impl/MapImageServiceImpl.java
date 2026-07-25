@@ -121,6 +121,24 @@ public class MapImageServiceImpl implements MapImageService {
     }
 
     @Override
+    public void delete(Long id) {
+        MapImage entity = mapImageMapper.getById(id);
+        if (entity == null) throw new IllegalArgumentException("地图不存在: " + id);
+        try {
+            // Delete original file
+            Path original = Paths.get(mapDir, entity.getUuidName());
+            Files.deleteIfExists(original);
+            // Delete thumbnail
+            String thumbName = entity.getUuidName().replace(".png", "_thumb.jpg");
+            Files.deleteIfExists(Paths.get(mapDir, thumbName));
+        } catch (IOException e) {
+            log.warn("Failed to delete map image files: {}", e.getMessage());
+        }
+        mapImageMapper.deleteById(id);
+        log.info("Map image deleted: id={}, name={}", id, entity.getOriginName());
+    }
+
+    @Override
     public List<MapImageVO> listAll() {
         List<MapImage> list = mapImageMapper.listAll();
         return list.stream().map(this::toVO).toList();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.RoadEdgeMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into road_edges (map_id, from_node, to_node, weight, code)
+        values (#{mapId}, #{fromNode}, #{toNode}, #{weight}, #{code})
+    </insert>
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into road_edges (map_id, from_node, to_node, weight, code) values
+        <foreach collection="list" item="e" separator=",">
+            (#{e.mapId}, #{e.fromNode}, #{e.toNode}, #{e.weight}, #{e.code})
+        </foreach>
+    </insert>
+    <update id="updateCode">
+        update road_edges set code = #{code} where id = #{id}
+    </update>
+    <select id="getByMapId" resultType="com.agripath.entity.RoadEdge">
+        select * from road_edges where map_id = #{mapId} order by id
+    </select>
+    <delete id="deleteByMapId">
+        delete from road_edges where map_id = #{mapId}
+    </delete>
+</mapper>

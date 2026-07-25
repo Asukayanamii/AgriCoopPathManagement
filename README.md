@@ -15,7 +15,7 @@
 | 层级 | 技术 |
 |------|------|
 | 前端 | Vue 3 (Composition API), Vite, Element Plus, Pinia, Vue Router, Axios, SVG |
-| 后端 | Spring Boot (多模块 Maven), MyBatis, MySQL, Druid, Redis, JWT |
+| 后端 | Spring Boot (多模块 Maven), MyBatis, MySQL, Druid, JWT |
 | 算法集成 | JNI (Java Native Interface), C++ DLL, 运行时动态加载 |
 | 存储 | 阿里云 OSS / 本地文件存储, 自动缩略图生成 |
 

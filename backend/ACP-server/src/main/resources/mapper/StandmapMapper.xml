@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.StandmapMapper">
+    <insert id="insertBatch">
+        insert into standmap (map_id, center_node, target_node, distance) values
+        <foreach collection="list" item="s" separator=",">
+            (#{s.mapId}, #{s.centerNode}, #{s.targetNode}, #{s.distance})
+        </foreach>
+    </insert>
+    <select id="getByMapId" resultType="com.agripath.entity.StandmapEntry">
+        select * from standmap where map_id = #{mapId} order by center_node, target_node
+    </select>
+    <delete id="deleteByMapId">
+        delete from standmap where map_id = #{mapId}
+    </delete>
+</mapper>

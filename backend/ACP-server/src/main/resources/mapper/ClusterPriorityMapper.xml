@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.ClusterPriorityMapper">
+    <insert id="insertOrUpdate">
+        insert into cluster_priority (map_id, cluster_id, priority, center_x, center_y, done)
+        values (#{mapId}, #{clusterId}, #{priority}, #{centerX}, #{centerY}, #{done})
+        on duplicate key update priority = #{priority}, center_x = #{centerX}, center_y = #{centerY}, done = #{done}
+    </insert>
+    <insert id="insertBatch">
+        insert into cluster_priority (map_id, cluster_id, priority, center_x, center_y, done) values
+        <foreach collection="list" item="p" separator=",">
+            (#{p.mapId}, #{p.clusterId}, #{p.priority}, #{p.centerX}, #{p.centerY}, #{p.done})
+        </foreach>
+        on duplicate key update priority = values(priority), center_x = values(center_x), center_y = values(center_y), done = values(done)
+    </insert>
+    <select id="getByMapIdOrdered" resultType="com.agripath.entity.ClusterPriority">
+        select * from cluster_priority where map_id = #{mapId} order by priority asc
+    </select>
+    <select id="getNextUndone" resultType="com.agripath.entity.ClusterPriority">
+        select * from cluster_priority where map_id = #{mapId} and done = 0 order by priority asc limit 1
+    </select>
+    <update id="updateDone">
+        update cluster_priority set done = #{done} where cluster_id = #{clusterId}
+    </update>
+    <update id="updatePriority">
+        update cluster_priority set priority = #{priority} where cluster_id = #{clusterId}
+    </update>
+    <delete id="deleteByMapId">
+        delete from cluster_priority where map_id = #{mapId}
+    </delete>
+</mapper>

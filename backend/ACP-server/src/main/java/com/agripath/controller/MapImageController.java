@@ -75,4 +75,15 @@ public class MapImageController {
         List<MapImageVO> list = mapImageService.listAll();
         return Result.success(list);
     }
+
+    @DeleteMapping("/{id}")
+    public Result<String> delete(@PathVariable Long id) {
+        log.info("删除地图: id={}", id);
+        try {
+            mapImageService.delete(id);
+            return Result.success("已删除");
+        } catch (IllegalArgumentException e) {
+            return Result.error(e.getMessage());
+        }
+    }
 }

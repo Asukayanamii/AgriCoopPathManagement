@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.ResourceMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into resources (map_id, x, y, state, belong_node)
+        values (#{mapId}, #{x}, #{y}, #{state}, #{belongNode})
+    </insert>
+    <insert id="insertBatch">
+        insert into resources (map_id, x, y, state, belong_node) values
+        <foreach collection="list" item="r" separator=",">
+            (#{r.mapId}, #{r.x}, #{r.y}, #{r.state}, #{r.belongNode})
+        </foreach>
+    </insert>
+    <select id="getByMapId" resultType="com.agripath.entity.Resource">
+        select * from resources where map_id = #{mapId} order by id
+    </select>
+    <select id="getById" resultType="com.agripath.entity.Resource">
+        select * from resources where id = #{id}
+    </select>
+    <update id="updateState">
+        update resources set state = #{state} where id = #{id}
+    </update>
+    <delete id="deleteByMapId">
+        delete from resources where map_id = #{mapId}
+    </delete>
+</mapper>

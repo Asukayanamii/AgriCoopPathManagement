@@ -10,4 +10,5 @@ public interface MapImageMapper {
     void insert(MapImage mapImage);
     MapImage getById(Long id);
     List<MapImage> listAll();
+    void deleteById(Long id);
 }

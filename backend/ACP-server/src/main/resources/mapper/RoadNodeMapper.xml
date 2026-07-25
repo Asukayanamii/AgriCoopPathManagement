@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.RoadNodeMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into road_nodes (map_id, x, y, code) values (#{mapId}, #{x}, #{y}, #{code})
+    </insert>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into road_nodes (map_id, x, y, code) values
+        <foreach collection="list" item="n" separator=",">
+            (#{n.mapId}, #{n.x}, #{n.y}, #{n.code})
+        </foreach>
+    </insert>
+
+    <update id="updateCode">
+        update road_nodes set code = #{code} where id = #{id}
+    </update>
+
+    <select id="getByMapId" resultType="com.agripath.entity.RoadNode">
+        select * from road_nodes where map_id = #{mapId} order by id
+    </select>
+
+    <select id="getById" resultType="com.agripath.entity.RoadNode">
+        select * from road_nodes where id = #{id}
+    </select>
+
+    <delete id="deleteByMapId">
+        delete from road_nodes where map_id = #{mapId}
+    </delete>
+</mapper>

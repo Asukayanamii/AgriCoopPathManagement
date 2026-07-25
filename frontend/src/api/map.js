@@ -11,3 +11,5 @@ export const getMapImageList = () => request.get('/map/image/list')
 export function getMapImageUrl(id) {
   return `/api/map/image/${id}`
 }
+
+export const deleteMapImage = (id) => request.delete(`/map/image/${id}`)

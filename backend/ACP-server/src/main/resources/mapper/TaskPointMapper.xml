@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.TaskPointMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into task_points (map_id, x, y, code) values (#{mapId}, #{x}, #{y}, #{code})
+    </insert>
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into task_points (map_id, x, y, code) values
+        <foreach collection="list" item="t" separator=",">
+            (#{t.mapId}, #{t.x}, #{t.y}, #{t.code})
+        </foreach>
+    </insert>
+    <select id="getByMapId" resultType="com.agripath.entity.TaskPoint">
+        select * from task_points where map_id = #{mapId} order by id
+    </select>
+    <select id="getById" resultType="com.agripath.entity.TaskPoint">
+        select * from task_points where id = #{id}
+    </select>
+    <update id="updateCode">
+        update task_points set code = #{code} where id = #{id}
+    </update>
+    <delete id="deleteByMapId">
+        delete from task_points where map_id = #{mapId}
+    </delete>
+</mapper>

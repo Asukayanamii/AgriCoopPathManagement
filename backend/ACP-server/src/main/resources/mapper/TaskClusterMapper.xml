@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.agripath.mapper.TaskClusterMapper">
+    <insert id="insertBatch">
+        insert into task_clusters (map_id, task_id, cluster_id, center_id) values
+        <foreach collection="list" item="c" separator=",">
+            (#{c.mapId}, #{c.taskId}, #{c.clusterId}, #{c.centerId})
+        </foreach>
+    </insert>
+    <select id="getByMapId" resultType="com.agripath.entity.TaskCluster">
+        select * from task_clusters where map_id = #{mapId} order by cluster_id, task_id
+    </select>
+    <select id="getByClusterId" resultType="com.agripath.entity.TaskCluster">
+        select * from task_clusters where map_id = #{mapId} and cluster_id = #{clusterId} order by task_id
+    </select>
+    <delete id="deleteByMapId">
+        delete from task_clusters where map_id = #{mapId}
+    </delete>
+</mapper>

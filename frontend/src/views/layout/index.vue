@@ -31,31 +31,9 @@
               <el-icon><Promotion /></el-icon>
               <template #title>系统首页</template>
             </el-menu-item>
-            <el-sub-menu index="/algorithm">
-              <template #title>
-                <el-icon><Algorithm /></el-icon>
-                <span>算法模块</span>
-              </template>
-              <el-menu-item index="/algorithm/cluster">
-                <el-icon><PieChart /></el-icon>
-                <template #title>聚类算法</template>
-              </el-menu-item>
-              <el-menu-item index="/algorithm/path-planning">
-                <el-icon><Connection /></el-icon>
-                <template #title>路径规划</template>
-              </el-menu-item>
-              <el-menu-item index="/algorithm/resource-search">
-                <el-icon><Search /></el-icon>
-                <template #title>资源搜索</template>
-              </el-menu-item>
-              <el-menu-item index="/algorithm/pipeline">
-                <el-icon><VideoPlay /></el-icon>
-                <template #title>协同流水线</template>
-              </el-menu-item>
-            </el-sub-menu>
             <el-menu-item index="/map-edit">
-              <el-icon><Picture /></el-icon>
-              <template #title>地图预处理</template>
+              <el-icon><MapLocation /></el-icon>
+              <template #title>算法演示</template>
             </el-menu-item>
           </el-menu>
         </el-aside>

@@ -10,4 +10,5 @@ public interface MapImageService {
     MapImageVO upload(MultipartFile file);
     Resource getImage(Long id, boolean thumbnail);
     List<MapImageVO> listAll();
+    void delete(Long id);
 }
